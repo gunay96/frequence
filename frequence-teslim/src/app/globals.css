@@ -1,0 +1,766 @@
+@import "tailwindcss";
+
+/*
+ * FREQUENCE — "sinyal" tasarım sistemi
+ *
+ * Sıcak grafit zemin, kemik beyazı metin, tek vurgu: analog VU ibresi
+ * amberi. Gradyan yok, neon yok, parlama yok; vurgu yalnızca yapısal
+ * yerlerde (birincil CTA, aktif nav, seçili durum, odak halkası).
+ */
+
+@font-face {
+  font-family: "Big Shoulders Display";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("/fonts/big-shoulders-display-latin-ext-wght-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Big Shoulders Display";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("/fonts/big-shoulders-display-latin-wght-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: "Instrument Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 700;
+  font-stretch: 75% 100%;
+  src: url("/fonts/instrument-sans-latin-ext-wdth-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Instrument Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 700;
+  font-stretch: 75% 100%;
+  src: url("/fonts/instrument-sans-latin-wdth-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("/fonts/ibm-plex-mono-latin-ext-400-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("/fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url("/fonts/ibm-plex-mono-latin-ext-500-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url("/fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+:root {
+  /* Yerel form denetimleri (checkbox, select, date) koyu zeminde aydınlık
+     UA kabuğuyla çiziliyordu; işaretçi rengi de sisteme bağlandı. */
+  color-scheme: dark;
+  accent-color: var(--primary);
+
+  /* Sıcak grafit gece */
+  --background: #0d0c0b;
+  --foreground: #efe9df;
+  --muted: #9a9187;
+  --surface: #141311;
+  --surface-elevated: #1b1916;
+  --surface-steel: #161412;
+
+  /* Sayfadaki tek aydınlık blok — malzeme değişimi, bölüm başlığı tekrarı değil */
+  --surface-light: #efe9df;
+  --surface-pale: #e2dace;
+  --on-light: #15120e;
+  --on-light-muted: #5e554b;
+
+  /* Çizgiler: kural olarak, dekor olarak değil */
+  --border: rgba(239, 233, 223, 0.12);
+  --border-strong: rgba(239, 233, 223, 0.26);
+  --border-light: rgba(21, 18, 14, 0.16);
+
+  /* Tek vurgu — VU amberi; sıcak, analog, neon değil */
+  --primary: #f2a623;
+  --primary-soft: #f7bd52;
+  --primary-strong: #cc8410;
+  --on-primary: #1a1204;
+  --secondary: #6b635a;
+  --focus: #f7bd52;
+  /* Semantic durum renkleri — yalnızca durum bildirimi */
+  --success: #3ecf8e;
+  --warning: #e0b96a;
+  --destructive: #f87171;
+  --tertiary: #8f857a;
+
+  /* Ölçü */
+  --container: 84rem;
+  --container-narrow: 40rem;
+  --section-y: clamp(4.25rem, 7vw, 8.5rem);
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+
+  /* Tipografi — dar poster grotesk başlık + grotesk gövde + mono künye */
+  --font-display: "Big Shoulders Display", "Arial Narrow", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-steel: var(--surface-steel);
+  --color-surface-light: var(--surface-light);
+  --color-surface-pale: var(--surface-pale);
+  --color-on-light: var(--on-light);
+  --color-on-light-muted: var(--on-light-muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-border-light: var(--border-light);
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-strong: var(--primary-strong);
+  --color-on-primary: var(--on-primary);
+  --color-secondary: var(--secondary);
+  --color-focus: var(--focus);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-destructive: var(--destructive);
+  --color-tertiary: var(--tertiary);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body);
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--primary) 40%, transparent);
+    color: var(--foreground);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .container-site {
+    width: min(100% - 3rem, var(--container));
+    margin-inline: auto;
+  }
+
+  .container-narrow {
+    width: min(100% - 3rem, var(--container-narrow));
+    margin-inline: auto;
+  }
+
+  .section-y {
+    padding-block: var(--section-y);
+  }
+
+  /* Mono künye: teknik, sakin; her bölümde aynı süslemeyi tekrarlamaz. */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    line-height: 1.4;
+    color: var(--muted);
+  }
+
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.45;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .meta-sm {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    line-height: 1.35;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Dar poster grotesk: başlıklar konser afişi gibi dikey ve sıkı; genişlik
+     yerine boyla konuşur. Italik serif yok. */
+  .display-mega,
+  .display-xl,
+  .display-lg,
+  .display-md {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.005em;
+    line-height: 0.9;
+    text-wrap: balance;
+  }
+
+  .display-mega { font-size: clamp(4rem, 13vw, 11rem); line-height: 0.9; text-transform: uppercase; letter-spacing: -0.01em; }
+  .display-xl   { font-size: clamp(3.2rem, 8.5vw, 7rem); line-height: 0.92; text-transform: uppercase; }
+  .display-lg   { font-size: clamp(2.6rem, 6.6vw, 5.25rem); line-height: 0.88; }
+  .display-md   { font-size: clamp(2rem, 4vw, 3.4rem); line-height: 0.92; }
+
+  .metric-type {
+    font-family: var(--font-display);
+    font-variant-numeric: tabular-nums;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 0.84;
+  }
+
+  /* Video/görsel üzerindeki okunabilirlik perdesi — dekor değil, kontrast
+     için. Zemin paletiyle aynı grafit ailesinden. */
+  .media-scrim {
+    background: linear-gradient(
+      180deg,
+      rgba(13, 12, 11, 0.28) 0%,
+      rgba(13, 12, 11, 0.12) 32%,
+      rgba(13, 12, 11, 0.76) 72%,
+      rgba(13, 12, 11, 0.98) 100%
+    );
+  }
+
+  .media-scrim--bottom {
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(13, 12, 11, 0.35) 55%,
+      rgba(13, 12, 11, 0.85) 100%
+    );
+  }
+
+  .spotlight-surface {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .spotlight-surface::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    content: "";
+    opacity: 0;
+    background: radial-gradient(22rem circle at var(--spotlight-x) var(--spotlight-y), rgba(247, 189, 82, 0.09), transparent 62%);
+    transition: opacity 240ms ease;
+    pointer-events: none;
+  }
+
+  .spotlight-surface:hover::before,
+  .spotlight-surface:focus-visible::before,
+  .spotlight-surface:focus-within::before {
+    opacity: 1;
+  }
+
+  .premium-marquee__track {
+    animation: premium-marquee 42s linear infinite;
+  }
+
+  .premium-marquee:hover .premium-marquee__track {
+    animation-play-state: paused;
+  }
+
+  @keyframes premium-marquee {
+    to { transform: translateX(-50%); }
+  }
+
+  .container-scroll {
+    --scroll-progress: 0;
+    height: 285vh;
+    position: relative;
+  }
+
+  .container-scroll__sticky {
+    position: sticky;
+    top: 0;
+    display: grid;
+    min-height: 100vh;
+    align-content: center;
+    padding: 5.5rem max(1.5rem, calc((100vw - 84rem) / 2)) 2.5rem;
+    perspective: 1200px;
+  }
+
+  .container-scroll__title {
+    max-width: 56rem;
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 4.8vw, 4.5rem);
+    line-height: 1;
+    transform: translateY(calc((1 - var(--scroll-progress)) * 1.75rem));
+    opacity: calc(0.5 + (var(--scroll-progress) * 0.5));
+  }
+
+  .container-scroll__stage {
+    margin-top: 2.5rem;
+    min-height: min(43rem, 70vh);
+    border-block: 1px solid var(--border-strong);
+    background: color-mix(in srgb, var(--surface-elevated) 90%, transparent);
+    box-shadow: 0 1.75rem 4.5rem rgba(0, 0, 0, 0.22);
+    transform: translateY(calc((1 - var(--scroll-progress)) * 2rem)) rotateX(calc((1 - var(--scroll-progress)) * 5deg)) scale(calc(0.97 + (var(--scroll-progress) * 0.03)));
+    transform-origin: center bottom;
+  }
+
+  .service-stage {
+    display: grid;
+    min-height: min(43rem, 70vh);
+    grid-template-columns: 0.42fr 1.2fr 0.72fr;
+    align-items: center;
+    gap: clamp(2.5rem, 5vw, 5.5rem);
+    padding: clamp(2.5rem, 5vw, 5rem);
+    animation: service-stage-in 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .service-stage__number {
+    font-family: var(--font-display);
+    font-size: clamp(7rem, 12vw, 11rem);
+    line-height: 0.8;
+    color: color-mix(in srgb, var(--primary) 18%, transparent);
+  }
+
+  .service-stage__detail { align-self: center; }
+
+  .service-stage__title {
+    font-size: clamp(3.25rem, 5.8vw, 6rem);
+    line-height: 0.98;
+  }
+
+  .service-stage__summary {
+    font-size: clamp(1rem, 1.35vw, 1.25rem);
+    max-width: 36rem;
+  }
+
+  .service-stage__progress {
+    height: 2px;
+  }
+
+  .service-stage__progress > span {
+    width: calc(var(--scroll-progress) * 100%);
+    height: 2px;
+  }
+
+  .service-stage--compact {
+    display: block;
+    min-height: 0;
+    padding: 0;
+    animation: none;
+  }
+
+  .service-stage--compact .service-stage__number { font-size: 4.5rem; }
+  .service-stage--compact .service-stage__core { margin-top: 2rem; }
+  .service-stage--compact .service-stage__detail { margin-top: 2rem; }
+
+  .service-stage--compact .service-stage__title {
+    font-size: clamp(2.5rem, 12vw, 3.5rem);
+  }
+
+  @keyframes service-stage-in {
+    from { opacity: 0; transform: translateY(1rem) scale(0.99); clip-path: inset(0 0 8% 0); }
+    to { opacity: 1; transform: translateY(0) scale(1); clip-path: inset(0); }
+  }
+
+  @media (max-width: 430px) {
+    .container-site,
+    .container-narrow {
+      width: min(100% - 2.5rem, var(--container));
+    }
+
+    .section-y {
+      padding-block: 3.5rem;
+    }
+  }
+
+  .grid-noise {
+    background-image:
+      linear-gradient(rgba(239, 233, 223, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(239, 233, 223, 0.03) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .grain {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+
+  .section-light,
+  .bg-surface-pale {
+    /* Aydınlık blokta amber koyulaştırılır; kemik zeminde kontrast korunur. */
+    --primary: #a05f00;
+    --primary-soft: #a05f00;
+    --primary-strong: #7a4800;
+    --on-primary: #efe9df;
+    --border: var(--border-light);
+    --border-strong: rgba(21, 18, 14, 0.32);
+  }
+
+  .section-light {
+    background: var(--surface-light);
+    color: var(--on-light);
+  }
+
+  .section-light .eyebrow,
+  .section-light .text-muted,
+  .section-light [class*="text-muted"] {
+    color: var(--on-light-muted);
+  }
+
+  .reveal {
+    animation: reveal-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes reveal-up {
+    from { opacity: 0; transform: translateY(1.4rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Giris sirasi: hepsi ayni anda degil, esit olmayan araliklarla. */
+  .stagger > * { animation: reveal-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .stagger > *:nth-child(1) { animation-delay: 0.02s; }
+  .stagger > *:nth-child(2) { animation-delay: 0.12s; }
+  .stagger > *:nth-child(3) { animation-delay: 0.18s; }
+  .stagger > *:nth-child(4) { animation-delay: 0.29s; }
+  .stagger > *:nth-child(5) { animation-delay: 0.34s; }
+  .stagger > *:nth-child(6) { animation-delay: 0.43s; }
+
+  @keyframes float-soft {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+
+  .motion-float {
+    animation: float-soft 5s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .stagger > *,
+    .motion-float,
+    .premium-marquee__track {
+      animation: none !important;
+      transform: none !important;
+    }
+
+    .service-stage {
+      animation: none !important;
+      transform: none !important;
+    }
+  }
+
+  @media (pointer: coarse) {
+    .spotlight-surface::before {
+      opacity: 0.7;
+      background: linear-gradient(90deg, rgba(247, 189, 82, 0.05), transparent 70%);
+    }
+  }
+
+  .rail-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--primary) 35%, transparent) transparent;
+  }
+
+  .rail-scroll::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .rail-scroll::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--primary) 35%, transparent);
+    border-radius: 999px;
+  }
+
+  /*
+   * Markalı yükleme sistemi
+   * Tek vurgu renginde ışık akışı: harflerin içinden (SVG clipPath maskesi)
+   * ve compact göstergede ince bir hat üzerinden geçer. Tek vurgu ailesi:
+   * --primary / --primary-soft / --primary-strong (+ primary butonda
+   * --on-primary). Gökkuşağı, neon, parçacık karmaşası yok.
+   */
+  .brand-flow__stream,
+  .brand-flow__glow {
+    animation: brand-flow-travel 1.7s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    will-change: transform;
+  }
+
+  @keyframes brand-flow-travel {
+    from {
+      transform: translateX(-340px);
+    }
+    to {
+      transform: translateX(1060px);
+    }
+  }
+
+  /* Tam ekranda wordmark'ın altındaki ince kural — akışın yansıması. */
+  .brand-flow__rule {
+    position: relative;
+    overflow: hidden;
+    width: min(74vw, 26rem);
+    height: 2px;
+    background: var(--border);
+  }
+
+  .brand-flow__rule::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 28%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--primary),
+      transparent
+    );
+    animation: brand-flow-rule 1.7s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  }
+
+  @keyframes brand-flow-rule {
+    from {
+      transform: translateX(-120%);
+    }
+    to {
+      transform: translateX(440%);
+    }
+  }
+
+  .brand-flow__rest {
+    display: none;
+  }
+
+  /* Compact: buton içi bekleme — ince hat + gezen vurgu segmenti. */
+  .brand-flow__compact-track {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    width: 1.75rem;
+    height: 2px;
+    background: color-mix(in srgb, currentColor 25%, transparent);
+  }
+
+  .brand-flow__compact-beam {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 40%;
+    background: var(--primary);
+    animation: brand-flow-compact 1.15s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  }
+
+  [data-tone="on-primary"] .brand-flow__compact-track {
+    background: color-mix(in srgb, var(--on-primary) 30%, transparent);
+  }
+
+  [data-tone="on-primary"] .brand-flow__compact-beam {
+    background: var(--on-primary);
+  }
+
+  @keyframes brand-flow-compact {
+    from {
+      transform: translateX(-110%);
+    }
+    to {
+      transform: translateX(290%);
+    }
+  }
+
+  /* Reduced-motion: akis durur; temiz, statik, markali durus kalir. */
+  @media (prefers-reduced-motion: reduce) {
+    .brand-flow__stream,
+    .brand-flow__glow {
+      display: none !important;
+    }
+
+    .brand-flow__rest {
+      display: block !important;
+    }
+
+    .brand-flow__rule::after,
+    .brand-flow__compact-beam {
+      animation: none !important;
+    }
+
+    .brand-flow__rule::after {
+      left: 36%;
+      transform: none;
+    }
+
+    .brand-flow__compact-beam {
+      left: 30%;
+      transform: none;
+    }
+  }
+
+
+}
+
+@media (min-width: 768px) {
+  .cinematic-footer {
+    position: sticky;
+    bottom: 0;
+    min-height: 70vh;
+  }
+}
+
+.cinematic-footer::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 5rem;
+  content: "";
+  background: linear-gradient(180deg, rgba(13, 12, 11, 0.72), transparent);
+  pointer-events: none;
+}
+
+@supports (animation-timeline: view()) {
+  @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+    .cinematic-footer__brand,
+    .cinematic-footer__content {
+      animation: footer-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 90%;
+    }
+
+    .cinematic-footer__brand { animation-name: footer-brand-reveal; }
+  }
+}
+
+@keyframes footer-reveal {
+  from { opacity: 0.2; transform: translateY(0.9rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes footer-brand-reveal {
+  from { opacity: 0.035; transform: translateY(1rem) scale(0.995); }
+  to { opacity: 0.11; transform: translateY(0) scale(1); }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .services-support-reveal > div > header,
+    .services-support-row,
+    .services-final-cta > section > div {
+      animation: services-content-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 72%;
+    }
+
+    .services-support-row {
+      animation-range: entry 0% entry 62%;
+    }
+  }
+
+  @media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+    .cinematic-footer__brand,
+    .cinematic-footer__content {
+      animation: footer-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 65%;
+    }
+  }
+}
+
+@keyframes services-content-reveal {
+  from { opacity: 0.35; transform: translateY(1.25rem) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .scene-reveal,
+    .archive-feature-reveal,
+    .manifesto-reveal {
+      animation: scene-enter linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 68%;
+    }
+
+    .archive-feature-reveal { animation-range: entry 0% entry 58%; }
+  }
+}
+
+@keyframes scene-enter {
+  from { opacity: 0.3; transform: translateY(1.5rem) scale(0.992); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+  /*
+   * Dönen kenar ışığı yok. `movingBorder`
+   * işaretli yüksek değerli CTA'lar sabit kalır; hiyerarşiyi yalnızca amber
+   * zemin taşır. Sınıf, bileşen sözleşmesi bozulmasın diye korunur.
+   */
+  .btn-moving {
+    position: relative;
+  }
